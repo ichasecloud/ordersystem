@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>OrderSystem</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging> <!-- must be pom -->
+    <name>OrderSystem</name>
+    <description>OrderSystem</description>
+
+    <!-- 声明所有子模块 -->
+    <modules>
+        <module>menu-service</module>
+        <module>user-service</module>
+        <module>shopping-cart-service</module>
+        <!-- 后续可以添加更多模块，如 order-service、user-service -->
+    </modules>
+
+    <!-- 项目统一的配置 -->
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
+    <!-- 父项目统一版本控制，子模块可以省略版本号 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot 相关依赖版本由 spring-boot-starter-parent 提供 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>3.4.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>3.4.4</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 父项目也保留插件配置（子模块默认继承） -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
