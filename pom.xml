@@ -25,7 +25,6 @@
         <module>user-service</module>
         <module>shopping-cart-service</module>
         <module>order-service</module>
-        <!-- 后续可以添加更多模块，如 order-service、user-service -->
     </modules>
 
     <!-- 项目统一的配置 -->
