@@ -3,13 +3,17 @@ package com.example.shoppingcartservice.controller;
 import com.example.shoppingcartservice.model.CartItem;
 import com.example.shoppingcartservice.service.CartService;
 import com.example.shoppingcartservice.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/cart")
+@Tag(name = "Shopping Cart", description = "API for cart operations")
 public class CartController {
 
     @Autowired
@@ -26,6 +30,7 @@ public class CartController {
         return jwtUtil.getUsername(token);
     }
 
+    @Operation(summary = "Add item to cart")
     @PostMapping("/add")
     public String add(@RequestBody CartItem item, @RequestHeader("Authorization") String authHeader) {
         String user = extractUser(authHeader);
@@ -33,6 +38,7 @@ public class CartController {
         return "Added to cart.";
     }
 
+    @Operation(summary = "Remove item from cart")
     @DeleteMapping("/remove/{itemID}")
     public String remove(@PathVariable Long itemID,
                          @RequestHeader("Authorization") String authHeader) {
@@ -41,6 +47,7 @@ public class CartController {
         return "Removed from cart.";
     }
 
+    @Operation(summary = "Get user's cart")
     @GetMapping
     public Map<Long, Integer> get(@RequestHeader("Authorization") String authHeader) {
         String user = extractUser(authHeader);

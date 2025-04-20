@@ -24,6 +24,7 @@
         <module>menu-service</module>
         <module>user-service</module>
         <module>shopping-cart-service</module>
+        <module>order-service</module>
         <!-- 后续可以添加更多模块，如 order-service、user-service -->
     </modules>
 
@@ -46,6 +47,12 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>3.4.4</version>
                 <scope>test</scope>
+            </dependency>
+            <!-- Swagger UI 用于所有子服务 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>2.2.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
