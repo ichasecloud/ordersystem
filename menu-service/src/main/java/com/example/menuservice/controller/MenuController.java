@@ -1,5 +1,6 @@
 package com.example.menuservice.controller;
 
+import com.example.menuservice.dto.MenuItemDTO;
 import com.example.menuservice.entity.MenuItem;
 import com.example.menuservice.service.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,14 +52,15 @@ public class MenuController {
 
     /**
      * Add a new item to the menu
-     * @param menuItem item to be added
+     * @param menuItemDTO item to be added
      * @param file image file to be updated
      * @return ResponseEntity
      */
     @PostMapping(value = "/items", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add a new item to menu with picture")
     public ResponseEntity<MenuItem> addMenuItem(
-            @RequestPart("menuItem") MenuItem menuItem,
+            @RequestPart("menuItem") MenuItemDTO menuItemDTO,
             @RequestPart("file") MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
@@ -66,27 +69,35 @@ public class MenuController {
 
         try {
             String imageUrl = saveFile(file);
+
+            // Map DTO to entity
+            MenuItem menuItem = new MenuItem();
+            menuItem.setName(menuItemDTO.getName());
+            menuItem.setDescription(menuItemDTO.getDescription());
+            menuItem.setPrice(menuItemDTO.getPrice());
+            menuItem.setCategory(menuItemDTO.getCategory());
             menuItem.setImageUrl(imageUrl);
+
             MenuItem savedItem = menuService.addMenuItem(menuItem);
             return new ResponseEntity<>(savedItem, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     /**
      * Update the item in the menu
      * @param id the id of item to be updated
-     * @param menuItem application/json format
+     * @param menuItemDTO application/json format
      * @param file image file to be uploaded
      * @return ResponseEntity
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/items/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Update an item to menu with picture")
     public ResponseEntity<MenuItem> updateMenuItemWithImage(
             @PathVariable Long id,
-            @RequestPart("menuItem") MenuItem menuItem,
+            @RequestPart("menuItem") MenuItemDTO menuItemDTO,
             @RequestPart("file") MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
@@ -95,8 +106,16 @@ public class MenuController {
 
         try {
             String imageUrl = saveFile(file);
-            menuItem.setImageUrl(imageUrl);
+
+            // Map DTO to entity
+            MenuItem menuItem = new MenuItem();
             menuItem.setId(id);
+            menuItem.setName(menuItemDTO.getName());
+            menuItem.setDescription(menuItemDTO.getDescription());
+            menuItem.setPrice(menuItemDTO.getPrice());
+            menuItem.setCategory(menuItemDTO.getCategory());
+            menuItem.setImageUrl(imageUrl);
+
             MenuItem updatedItem = menuService.updateMenuItem(menuItem);
             return new ResponseEntity<>(updatedItem, HttpStatus.OK);
         } catch (IOException e) {
@@ -106,6 +125,7 @@ public class MenuController {
     }
 
     // Delete item in menu
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/items/{id}")
     @Operation(summary = "Delete an item")
     public void deleteMenuItem(@PathVariable Long id) {
