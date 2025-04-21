@@ -190,9 +190,9 @@ Authorization: Bearer <token>
 ## 📌 Swagger UI
 **After service started:**
 
-- Menu service: 
+- Menu service:
 
-​	http://localhost:8080/swagger-ui/index.html
+  http://localhost:8080/swagger-ui/index.html
 
 - User service: 
 
