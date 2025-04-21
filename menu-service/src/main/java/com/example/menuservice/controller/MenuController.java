@@ -20,7 +20,7 @@ import java.util.List;
 import java.nio.file.*;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/menu")
 @Tag(name = "Menu Service", description = "API for menu operations")
