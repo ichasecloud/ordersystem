@@ -5,10 +5,13 @@ import com.example.shoppingcartservice.service.CartService;
 import com.example.shoppingcartservice.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,8 +52,27 @@ public class CartController {
 
     @Operation(summary = "Get user's cart")
     @GetMapping
-    public Map<Long, Integer> get(@RequestHeader("Authorization") String authHeader) {
+    public List<CartItem> get(@RequestHeader("Authorization") String authHeader) {
         String user = extractUser(authHeader);
-        return cartService.getCart(user);
+        Map<Long, Integer> cartMap = cartService.getCart(user);
+
+        // transform Map<Long, Integer> to List<CartItem>
+        List<CartItem> list = new ArrayList<>();
+        for (Map.Entry<Long, Integer> entry : cartMap.entrySet()) {
+            CartItem item = new CartItem();
+            item.setItemId(entry.getKey());
+            item.setQuantity(entry.getValue());
+            list.add(item);
+        }
+
+        return list;
+    }
+
+    @Operation(summary = "Clear user's cart")
+    @DeleteMapping("/clear")
+    public ResponseEntity<String> clearCart(@RequestHeader("Authorization") String authHeader) {
+        String user = extractUser(authHeader);
+        cartService.clearCart(user);
+        return ResponseEntity.ok("Cart cleared.");
     }
 }

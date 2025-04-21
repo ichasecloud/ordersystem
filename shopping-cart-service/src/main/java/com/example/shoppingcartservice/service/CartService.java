@@ -41,4 +41,9 @@ public class CartService {
         Map<Long, Integer> cart = redisTemplate.opsForValue().get(key);
         return cart != null ? cart : new HashMap<>();
     }
+
+    public void clearCart(String username) {
+        String key = getKey(username);
+        redisTemplate.delete(key);
+    }
 }

@@ -31,10 +31,9 @@ public class OrderController {
 
     @PostMapping("/create")
     @Operation(summary = "Create an order, request must have Authorization")
-    public Order createOrder(@RequestBody OrderRequest orderRequest,
-                             @RequestHeader("Authorization") String authHeader) {
+    public Order createOrder(@RequestHeader("Authorization") String authHeader) {
         String username = extractUser(authHeader);
-        return orderService.createOrder(username, orderRequest);
+        return orderService.createOrder(username, authHeader.substring(7));
     }
 
     @PutMapping("/pay/{orderId}")
