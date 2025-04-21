@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/orders")
 @Tag(name = "Order Service", description = "API for order operations")
@@ -48,5 +50,12 @@ public class OrderController {
     @Operation(summary = "Cancel an order, the user must be the order owner")
     public Order cancel(@PathVariable Long orderId) {
         return orderService.cancelOrder(orderId);
+    }
+
+    @GetMapping("/my")
+    @Operation(summary = "Find all orders of this user")
+    public List<Order> getMyOrders(@RequestHeader("Authorization") String authHeader) {
+        String username = extractUser(authHeader);
+        return orderService.getOrdersByUsername(username);
     }
 }

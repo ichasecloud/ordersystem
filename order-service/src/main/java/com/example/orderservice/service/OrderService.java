@@ -88,4 +88,7 @@ public class OrderService {
 
         return order;
     }
+
+    public List<Order> getOrdersByUsername(String username) {
+        return orderRepository.findByUsername(username);}
 }
