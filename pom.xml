@@ -21,10 +21,10 @@
 
     <!-- 声明所有子模块 -->
     <modules>
-        <module>menu-service</module>
         <module>user-service</module>
         <module>shopping-cart-service</module>
         <module>order-service</module>
+        <module>menu-service</module>
     </modules>
 
     <!-- 项目统一的配置 -->

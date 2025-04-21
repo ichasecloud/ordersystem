@@ -22,7 +22,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/menu")
 @Tag(name = "Menu Service", description = "API for menu operations")
-
 public class MenuController {
 
     private final MenuService menuService;
